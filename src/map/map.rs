@@ -81,9 +81,16 @@ fn get_random_tree_pos(size: usize) -> HashSet<Point> {
 
     let mut rng = rand::thread_rng();
     for _ in 0..10 {
-        let rnd_row = rng.gen_range(0..size);
-        let rnd_column = rng.gen_range(0..size);
-        tree_set.insert(Point::new((rnd_row, rnd_column)));
+        //loop to prevent skipping duplicated values
+        'inner: loop {
+            let rnd_row = rng.gen_range(0..size);
+            let rnd_column = rng.gen_range(0..size);
+            let did_insert = tree_set.insert(Point::new((rnd_row, rnd_column)));
+
+            if did_insert {
+                break 'inner;
+            }
+        }
     }
     tree_set
 }
