@@ -1,8 +1,10 @@
 mod map;
 mod game;
+mod resources;
 
 use notan::draw::DrawConfig;
-use notan::prelude::WindowConfig;
+use notan::Event;
+use notan::prelude::{Assets, WindowConfig};
 use crate::{
     map::{
         tile::tile::*,
@@ -33,9 +35,14 @@ fn main() -> Result<(), String> {
     let window_config = WindowConfig::new()
         .set_resizable(true);
 
-    notan::init()
+    notan::init_with(State::create_game_state)
+        //.add_loader(create_toml_loader())
         .add_config(window_config)
         .add_config(DrawConfig)
+
+        .initialize(|assets: &mut Assets, state: &mut State| {})
+
+        .update(|assets: &mut Assets, state: &mut State| {})
 
         .draw(Game::draw)
         .build()
