@@ -9,11 +9,15 @@ use notan::{
         Color,
         Graphics,
     },
+    prelude::Assets
 };
-use notan::prelude::{Asset, Assets};
-use crate::map::map::create_map;
-use crate::map::tile::tile::Tile;
-use crate::resources::resource_handler::{read_file, read_file_as_string};
+use crate::{
+    map::{
+        map::create_map,
+        tile::tile::Tile
+    },
+    config::game_config::GameConfig
+};
 
 #[derive(AppState)]
 pub struct State {
@@ -23,10 +27,15 @@ pub struct State {
 
 impl State {
     pub fn create_game_state(assets: &mut Assets) -> Self {
-        match read_file_as_string("config.toml") {
-            Ok(s) => { println!("{}", s) }
-            Err(e) => { println!("{}", e.to_string()) }
-        };
+        // match read_file_as_string("config.toml") {
+        //     Ok(s) => { println!("{}", s) }
+        //     Err(e) => { println!("{}", e.to_string()) }
+        // };
+
+        let cfg = GameConfig::load_or_create_new();
+        //keep this line to save a new config.toml
+        //ToDo: add mechanism to save on demand
+        //GameConfig::save_config(&cfg);
 
         Self {
             map: create_map(12),

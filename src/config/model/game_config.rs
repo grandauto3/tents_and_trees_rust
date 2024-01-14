@@ -8,7 +8,7 @@ pub struct Config {
 }
 
 #[derive(Serialize, Deserialize)]
-struct MapConfig {
+pub struct MapConfig {
     size: u32,
 }
 

@@ -1,9 +1,9 @@
 use crate::config::model::game_config::Config;
-use crate::resources::resource_handler::write_file;
+use crate::resources::resource_handler::{read_file_as_string, write_file};
 
 const CONFIG_FILE_NAME: &str = "config.toml";
 
-struct GameConfig {
+pub struct GameConfig {
     model: Config,
 }
 
@@ -24,7 +24,10 @@ impl GameConfig {
     pub fn save_config(cfg: &GameConfig) {
         let toml = match toml::to_string(&cfg.model) {
             Ok(s) => { s }
-            Err(e) => { println!("{}", e.to_string()); "".into() }
+            Err(e) => {
+                println!("{}", e.to_string());
+                "".into()
+            }
         };
 
         write_file(CONFIG_FILE_NAME, &toml).unwrap_or_else(|e| println!("{}", e.to_string()));
@@ -32,6 +35,16 @@ impl GameConfig {
 
 
     pub fn load_config() -> Result<Self, String> {
-        Err("Not implemented".to_string())
+        match read_file_as_string(CONFIG_FILE_NAME) {
+            Ok(s) => {
+                match toml::from_str(&s) {
+                    Ok(cfg) => {
+                        Ok(GameConfig { model: cfg })
+                    }
+                    Err(e) => { Err(e.to_string()) }
+                }
+            }
+            Err(e) => { Err(e.to_string()) }
+        }
     }
 }
