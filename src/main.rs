@@ -1,10 +1,16 @@
 mod map;
 mod game;
 mod resources;
+mod config;
 
-use notan::draw::DrawConfig;
-use notan::Event;
-use notan::prelude::{Assets, WindowConfig};
+use notan::{
+    draw::DrawConfig,
+    log,
+    prelude::{
+        Assets,
+        WindowConfig,
+    },
+};
 use crate::{
     map::{
         tile::tile::*,
@@ -39,6 +45,7 @@ fn main() -> Result<(), String> {
         //.add_loader(create_toml_loader())
         .add_config(window_config)
         .add_config(DrawConfig)
+        .add_config(log::LogConfig::debug())
 
         .initialize(|assets: &mut Assets, state: &mut State| {})
 
