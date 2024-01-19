@@ -4,7 +4,7 @@ use crate::resources::resource_handler::{read_file_as_string, write_file};
 const CONFIG_FILE_NAME: &str = "config.toml";
 
 pub struct GameConfig {
-    model: Config,
+    pub model: Config,
 }
 
 impl GameConfig {

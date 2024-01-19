@@ -9,7 +9,7 @@ pub struct Config {
 
 #[derive(Serialize, Deserialize)]
 pub struct MapConfig {
-    size: u32,
+    pub size: u32,
 }
 
 impl Default for Config {

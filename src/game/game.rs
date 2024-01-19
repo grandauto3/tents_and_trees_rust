@@ -9,7 +9,7 @@ use notan::{
         Color,
         Graphics,
     },
-    prelude::Assets
+    prelude::Assets,
 };
 use crate::{
     map::{
@@ -55,7 +55,32 @@ impl Game {
         let mut draw = gfx.create_draw();
         draw.clear(Color::TEAL);
 
-        draw.rect((100.0, 100.0), (600.0, 400.0));
+        let map_row_len = state.map.row_len();
+        let map_col_len = state.map.column_len();
+
+        let mut index = 0;
+
+        for x in 0..map_row_len {
+            for y in 0..map_col_len {
+                const SIZE: f32 = 50f32;
+                const POS_OFFSET: f32 = 10f32;
+                const OFFSET: f32 = 100f32;
+
+                let position = (((SIZE + POS_OFFSET) * x as f32) + OFFSET, ((SIZE + POS_OFFSET) * y as f32) + OFFSET);
+                let color = match index % 5 {
+                    0 => { Color::RED }
+                    1 => { Color::BLACK }
+                    2 => { Color::BLUE }
+                    3 => { Color::PURPLE }
+                    4 => { Color::OLIVE }
+                    _ => { Color::WHITE }
+                };
+
+                draw.rect(position, (SIZE, SIZE)).color(color);
+
+                index += 1;
+            }
+        }
 
         gfx.render(&draw);
     }
