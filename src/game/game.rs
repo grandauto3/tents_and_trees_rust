@@ -14,9 +14,9 @@ use notan::{
 use crate::{
     map::{
         map::create_map,
-        tile::tile::Tile
+        tile::tile::Tile,
     },
-    config::game_config::GameConfig
+    config::game_config::GameConfig,
 };
 
 #[derive(AppState)]
@@ -38,7 +38,7 @@ impl State {
         //GameConfig::save_config(&cfg);
 
         Self {
-            map: create_map(12),
+            map: create_map(cfg.model.map_config.size as usize),
             //toml: cfg,
         }
     }
