@@ -30,6 +30,8 @@ impl GameConfig {
             }
         };
 
+        println!("Save toml: \n{toml}");
+
         write_file(CONFIG_FILE_NAME, &toml).unwrap_or_else(|e| println!("{}", e.to_string()));
     }
 

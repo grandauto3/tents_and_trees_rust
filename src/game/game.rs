@@ -23,6 +23,7 @@ use crate::{
 pub struct State {
     map: Array2D<Tile>,
     //pub toml: Asset<String>,
+    cfg: GameConfig,
 }
 
 impl State {
@@ -39,8 +40,12 @@ impl State {
 
         Self {
             map: create_map(cfg.model.map_config.size as usize),
-            //toml: cfg,
+            cfg,
         }
+    }
+
+    pub fn save_config(&self) {
+        GameConfig::save_config(&self.cfg);
     }
 
     pub fn get_map(&self) -> &Array2D<Tile> {
