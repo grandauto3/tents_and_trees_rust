@@ -10,6 +10,7 @@ use notan::{
         Assets,
         WindowConfig,
     },
+    egui::*,
 };
 use crate::{
     map::{
@@ -46,6 +47,7 @@ fn main() -> Result<(), String> {
         .add_config(window_config)
         .add_config(DrawConfig)
         .add_config(log::LogConfig::debug())
+        .add_config(EguiConfig)
 
         .initialize(|assets: &mut Assets, state: &mut State| {})
 

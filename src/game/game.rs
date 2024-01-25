@@ -19,6 +19,7 @@ use crate::{
         tile::tile::Tile,
     },
     config::game_config::GameConfig,
+    game::game_ui::GameUI,
 };
 
 #[derive(AppState)]
@@ -110,5 +111,10 @@ impl Game {
             }
         }
         gfx.render(&draw);
+
+
+        let ui = GameUI::draw_ui(state);
+        let ui = plugins.egui(ui);
+        gfx.render(&ui);
     }
 }
