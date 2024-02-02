@@ -4,8 +4,8 @@ use rand::Rng;
 
 use crate::map::tile::{tile::*, point::*};
 
-pub fn create_map(size: usize) -> Array2D<Tile> {
-    let tree_set = get_random_tree_pos(size);
+pub fn create_map((size_x, size_y): (usize, usize)) -> Array2D<Tile> {
+    let tree_set = get_random_tree_pos((size_x, size_y));
 
     // start at -1 so we can safely increment it in the closure to 0
     // because the if-clause will be called on the first iteration even though the row is not completed
@@ -13,14 +13,14 @@ pub fn create_map(size: usize) -> Array2D<Tile> {
     let mut column_counter = 0;
     let incrementor = || {
         let tmp_column = column_counter;
-        let column = tmp_column % size;
+        let column = tmp_column % size_y;
         column_counter += 1;
 
         if column == 0 {
             row_counter += 1;
         }
         let tmp_row = row_counter as usize;
-        let row = tmp_row % size;
+        let row = tmp_row % size_x;
 
         let point = Point::new((row, column));
 
@@ -32,7 +32,7 @@ pub fn create_map(size: usize) -> Array2D<Tile> {
 
         Tile::new(tile_type, point)
     };
-    Array2D::filled_by_row_major(incrementor, size, size)
+    Array2D::filled_by_row_major(incrementor, size_x, size_y)
 }
 
 pub fn get_neighbours((row, column): (usize, usize), map: &Array2D<Tile>) -> Vec<Option<&Tile>> {
@@ -76,15 +76,15 @@ pub fn draw_map(map: &Array2D<Tile>) {
     println!("{}", line);
 }
 
-fn get_random_tree_pos(size: usize) -> HashSet<Point> {
+fn get_random_tree_pos((size_x, size_y): (usize, usize)) -> HashSet<Point> {
     let mut tree_set = HashSet::new();
 
     let mut rng = rand::thread_rng();
     for _ in 0..10 {
         //loop to prevent skipping duplicated values
         'inner: loop {
-            let rnd_row = rng.gen_range(0..size);
-            let rnd_column = rng.gen_range(0..size);
+            let rnd_row = rng.gen_range(0..size_x);
+            let rnd_column = rng.gen_range(0..size_y);
             let did_insert = tree_set.insert(Point::new((rnd_row, rnd_column)));
 
             if did_insert {
