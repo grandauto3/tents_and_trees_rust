@@ -1,6 +1,4 @@
-use notan::{
-    egui::*,
-};
+use notan::egui::*;
 use crate::game::game::State;
 
 pub struct GameUI;
@@ -14,10 +12,24 @@ impl GameUI {
                 }
             });
 
+            const SLIDER_SPEED: f64 = 0.01;
+
             Window::new("Inspector")
                 .resizable(true)
                 .show(&ctx, |ui| {
-                    ui.label("Test");
+                    ui.label("Size");
+                    ui.horizontal(|ui| {
+                        ui.label("X");
+                        let mut x = state.get_map_size().0;
+                        ui.add(DragValue::new(&mut x).speed(SLIDER_SPEED));
+                        state.set_map_size((x, state.get_map_size().1));
+                    });
+                    ui.horizontal(|ui| {
+                        ui.label("Y");
+                        let mut y = state.get_map_size().1;
+                        ui.add(DragValue::new(&mut y).speed(SLIDER_SPEED));
+                        state.set_map_size((state.get_map_size().0, y));
+                    });
                 }, );
         }
     }
