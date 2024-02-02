@@ -16,6 +16,7 @@ use crate::game::game::*;
 
 
 fn main() -> Result<(), String> {
+
     let window_config = WindowConfig::new()
         .set_resizable(true);
 
