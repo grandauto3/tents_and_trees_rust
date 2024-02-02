@@ -40,9 +40,11 @@ impl State {
         //keep this line to save a new config.toml
         //ToDo: add mechanism to save on demand
         //GameConfig::save_config(&cfg);
+        let size: (usize, usize) = (cfg.model.map_config.size.get("x").unwrap().as_integer().unwrap() as usize,
+                                    cfg.model.map_config.size.get("y").unwrap().as_integer().unwrap() as usize);
 
         Self {
-            map: create_map(cfg.model.map_config.size as usize),
+            map: create_map(size),
             cfg,
         }
     }

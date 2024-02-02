@@ -1,6 +1,9 @@
 use serde::{Serialize, Deserialize};
+use toml::{
+    Table
+};
 
-const SIZE: usize = 12;
+const SIZE: u32 = 12;
 
 #[derive(Serialize, Deserialize)]
 pub struct Config {
@@ -9,7 +12,7 @@ pub struct Config {
 
 #[derive(Serialize, Deserialize)]
 pub struct MapConfig {
-    pub size: u32,
+    pub size: Table,
 }
 
 impl Default for Config {
@@ -22,8 +25,12 @@ impl Default for Config {
 
 impl Default for MapConfig {
     fn default() -> Self {
+        let mut default_table = Table::new();
+        default_table.insert("x".to_owned(), SIZE.into());
+        default_table.insert("y".to_owned(), SIZE.into());
+
         MapConfig {
-            size: SIZE as u32
+            size: default_table,
         }
     }
 }
