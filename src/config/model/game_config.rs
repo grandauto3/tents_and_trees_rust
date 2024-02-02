@@ -1,4 +1,3 @@
-use std::iter::Map;
 use serde::{Serialize, Deserialize};
 use toml::{
     Table
@@ -22,6 +21,12 @@ impl MapConfig {
             self.size.get("x").unwrap().as_integer().unwrap() as usize,
             self.size.get("y").unwrap().as_integer().unwrap() as usize,
         )
+    }
+    pub fn set_size(&mut self, new: (usize, usize)) {
+
+            *self.size.get_mut("x").unwrap() = toml::Value::Integer(new.0 as i64);
+            *self.size.get_mut("y").unwrap() = toml::Value::Integer(new.1 as i64);
+
     }
 }
 

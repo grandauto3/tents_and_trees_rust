@@ -31,17 +31,9 @@ pub struct State {
 
 impl State {
     pub fn create_game_state(assets: &mut Assets) -> Self {
-        // match read_file_as_string("config.toml") {
-        //     Ok(s) => { println!("{}", s) }
-        //     Err(e) => { println!("{}", e.to_string()) }
-        // };
-
         let cfg = GameConfig::load_or_create_new();
-        //keep this line to save a new config.toml
-        //ToDo: add mechanism to save on demand
-        //GameConfig::save_config(&cfg);
-        let size: (usize, usize) = (cfg.model.map_config.size.get("x").unwrap().as_integer().unwrap() as usize,
-                                    cfg.model.map_config.size.get("y").unwrap().as_integer().unwrap() as usize);
+
+        let size = cfg.model.map_config.get_size();
 
         Self {
             map: create_map(size),
@@ -57,8 +49,11 @@ impl State {
         &self.map
     }
 
-    pub fn get_map_size(&self) -> (usize,usize) {
+    pub fn get_map_size(&self) -> (usize, usize) {
         self.cfg.model.map_config.get_size()
+    }
+    pub fn set_map_size(&mut self, new: (usize, usize)) {
+        self.cfg.model.map_config.set_size(new);
     }
 }
 
