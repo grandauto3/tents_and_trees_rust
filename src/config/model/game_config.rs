@@ -1,3 +1,4 @@
+use std::iter::Map;
 use serde::{Serialize, Deserialize};
 use toml::{
     Table
@@ -13,6 +14,15 @@ pub struct Config {
 #[derive(Serialize, Deserialize)]
 pub struct MapConfig {
     pub size: Table,
+}
+
+impl MapConfig {
+    pub fn get_size(&self) -> (usize, usize) {
+        (
+            self.size.get("x").unwrap().as_integer().unwrap() as usize,
+            self.size.get("y").unwrap().as_integer().unwrap() as usize,
+        )
+    }
 }
 
 impl Default for Config {
