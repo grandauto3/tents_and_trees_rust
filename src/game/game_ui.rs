@@ -10,6 +10,9 @@ impl GameUI {
                 if ui.button("Save config").clicked() {
                     state.save_config();
                 }
+                if ui.button("Redraw Map").clicked() {
+                    state.redraw_map();
+                }
             });
 
             const SLIDER_SPEED: f64 = 0.01;
@@ -19,16 +22,24 @@ impl GameUI {
                 .show(&ctx, |ui| {
                     ui.label("Size");
                     ui.horizontal(|ui| {
-                        ui.label("X");
+                        ui.label("X:");
                         let mut x = state.get_map_size().0;
-                        ui.add(DragValue::new(&mut x).speed(SLIDER_SPEED));
+                        let changed = ui.add(DragValue::new(&mut x).speed(SLIDER_SPEED))
+                                        .changed();
                         state.set_map_size((x, state.get_map_size().1));
+                        if changed {
+                            state.redraw_map();
+                        }
                     });
                     ui.horizontal(|ui| {
-                        ui.label("Y");
+                        ui.label("Y:");
                         let mut y = state.get_map_size().1;
-                        ui.add(DragValue::new(&mut y).speed(SLIDER_SPEED));
+                        let changed = ui.add(DragValue::new(&mut y).speed(SLIDER_SPEED))
+                                        .changed();
                         state.set_map_size((state.get_map_size().0, y));
+                        if changed {
+                            state.redraw_map();
+                        }
                     });
                 }, );
         }
