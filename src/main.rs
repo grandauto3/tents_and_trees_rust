@@ -11,12 +11,12 @@ use notan::{
         WindowConfig,
     },
     egui::*,
+    app::Plugins,
 };
 use crate::game::game::*;
 
 
 fn main() -> Result<(), String> {
-
     let window_config = WindowConfig::new()
         .set_resizable(true);
 
@@ -27,7 +27,7 @@ fn main() -> Result<(), String> {
         .add_config(log::LogConfig::debug())
         .add_config(EguiConfig)
 
-        .initialize(|assets: &mut Assets, state: &mut State| {})
+        .initialize(|assets: &mut Assets, plugins: &mut Plugins, state: &mut State| {})
 
         .update(|assets: &mut Assets, state: &mut State| {})
 
