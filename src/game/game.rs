@@ -92,6 +92,8 @@ impl Game {
         //finally we subtract half of the padding because we want the center of the padding and the full padding gives us the outermost right position
         let off_set_x = state.offset.0 + ((CELL_WITH_PADDING) * (pos_in_x)) + OFFSET - (PADDING / 2f32);
         let off_set_y = state.offset.1 + ((CELL_WITH_PADDING) * (pos_in_y)) + OFFSET - (PADDING / 2f32);
+        let off_set_x = (window_center.0 as f32 - (CELL_WITH_PADDING * (map_row_len / 2) as f32)) + ((CELL_WITH_PADDING) * (pos_in_x)) + OFFSET - (PADDING / 2f32);
+        let off_set_y = (window_center.1 as f32 - (CELL_WITH_PADDING * (map_col_len / 2) as f32)) + ((CELL_WITH_PADDING) * (pos_in_y)) + OFFSET - (PADDING / 2f32);
 
         let mut index = 0;
         for x in 0..map_row_len {
@@ -112,6 +114,10 @@ impl Game {
 
                 let off_set_x = (state.offset.0) + OFFSET;
                 let off_set_y = (state.offset.1) + OFFSET;
+
+                let off_set_x = (window_center.0 as f32 - (CELL_WITH_PADDING * (map_row_len / 2) as f32)) + OFFSET;
+                let off_set_y = (window_center.1 as f32 - (CELL_WITH_PADDING * (map_col_len / 2) as f32)) + OFFSET;
+
 
                 //println!("offset_x: {}; offset_y: {}", off_set_x, off_set_y);
                 //println!("window_x: {}; window_y: {}", window_center.0, window_center.1);
