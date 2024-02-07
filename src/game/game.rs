@@ -76,6 +76,9 @@ impl Game {
         let window_size = app.backend.window().size();
         let window_center = (window_size.0 / 2, window_size.1 / 2);
 
+        println!("window_size: {:?}", window_size);
+        println!("window_center: {:?}", window_center);
+
         const SIZE_OF_CELL: f32 = 50f32;
         const PADDING: f32 = 10f32;
         const OFFSET: f32 = 10f32;
@@ -83,13 +86,12 @@ impl Game {
 
         let pos_in_x = (map_row_len / 2) as f32;
         let pos_in_y = (map_col_len / 2) as f32;
-
         //we add the cell size + padding to get the "bigger cell" (cell + padding)
         //pos_in_x/y means the middle position of the map (in a 12*12 config, 6*6 for example)
         //we also need the OFFSET
         //finally we subtract half of the padding because we want the center of the padding and the full padding gives us the outermost right position
-        let off_set_x = ((CELL_WITH_PADDING) * (pos_in_x)) + OFFSET - (PADDING / 2f32);
-        let off_set_y = ((CELL_WITH_PADDING) * (pos_in_y)) + OFFSET - (PADDING / 2f32);
+        let off_set_x = state.offset.0 + ((CELL_WITH_PADDING) * (pos_in_x)) + OFFSET - (PADDING / 2f32);
+        let off_set_y = state.offset.1 + ((CELL_WITH_PADDING) * (pos_in_y)) + OFFSET - (PADDING / 2f32);
 
         let mut index = 0;
         for x in 0..map_row_len {
@@ -114,6 +116,10 @@ impl Game {
                 //println!("offset_x: {}; offset_y: {}", off_set_x, off_set_y);
                 //println!("window_x: {}; window_y: {}", window_center.0, window_center.1);
 
+                /*
+                    in a 1920x877 (VM on in-tech machine) the center is 960x438
+                    but offset needs to be 595x73
+                */
                 let position = (
                     ((CELL_WITH_PADDING) * x as f32) + off_set_x,
                     ((CELL_WITH_PADDING) * y as f32) + off_set_y,

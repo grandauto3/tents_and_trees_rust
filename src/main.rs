@@ -34,4 +34,3 @@ fn main() -> Result<(), String> {
         .draw(Game::draw)
         .build()
 }
-
