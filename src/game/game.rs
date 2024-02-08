@@ -21,6 +21,7 @@ use crate::{
     config::game_config::GameConfig,
     game::game_ui::GameUI,
 };
+use crate::map::tile::tile::TileType;
 
 #[derive(AppState)]
 pub struct State {
@@ -70,10 +71,10 @@ impl Game {
         let mut draw = gfx.create_draw();
         draw.clear(Color::TEAL);
 
-        let map_row_len = state.map.row_len();
-        let map_col_len = state.map.column_len();
+        let map_row_len = &state.map.row_len();
+        let map_col_len = &state.map.column_len();
 
-        let window_size = app.backend.window().size();
+        let window_size = &app.backend.window().size();
         let window_center = (window_size.0 / 2, window_size.1 / 2);
 
         const SIZE_OF_CELL: f32 = 50f32;
@@ -89,9 +90,8 @@ impl Game {
         );
 
 
-        let mut index = 0;
-        for x in 0..map_row_len {
-            for y in 0..map_col_len {
+        for (x, row) in state.map.rows_iter().enumerate() {
+            for (y, element) in row.enumerate() {
                 let off_set_x = center_of_map_relative.0 + OFFSET;
                 let off_set_y = center_of_map_relative.1 + OFFSET;
 
@@ -100,18 +100,16 @@ impl Game {
                     ((CELL_WITH_PADDING) * y as f32) + off_set_y,
                 );
 
-                let color = match index % 5 {
-                    0 => { Color::RED }
-                    1 => { Color::BLACK }
-                    2 => { Color::BLUE }
-                    3 => { Color::PURPLE }
-                    4 => { Color::OLIVE }
-                    _ => { Color::WHITE }
+                let color = match element.get_tile_type() {
+                    TileType::UNKNOWN => Color::GRAY,
+                    TileType::EMPTY => Color::OLIVE,
+                    TileType::TENT => Color::YELLOW,
+                    TileType::TREE => Color::GREEN,
+                    _ => Color::RED,
+
                 };
 
                 draw.rect(position, (SIZE_OF_CELL, SIZE_OF_CELL)).color(color);
-
-                index += 1;
             }
         }
 
