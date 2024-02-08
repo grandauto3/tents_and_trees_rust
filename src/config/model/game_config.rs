@@ -23,10 +23,8 @@ impl MapConfig {
         )
     }
     pub fn set_size(&mut self, new: (usize, usize)) {
-
-            *self.size.get_mut("x").unwrap() = toml::Value::Integer(new.0 as i64);
-            *self.size.get_mut("y").unwrap() = toml::Value::Integer(new.1 as i64);
-
+        *self.size.get_mut("x").unwrap() = toml::Value::Integer(new.0 as i64);
+        *self.size.get_mut("y").unwrap() = toml::Value::Integer(new.1 as i64);
     }
 }
 

@@ -14,59 +14,44 @@ impl GameUI {
                     if ui.button("Regenerate Map").clicked() {
                         state.regenerate_map();
                     }
+                    if ui.button("Toggle inspector").clicked() {
+                         state.ui_model.show_inspector = !state.ui_model.show_inspector;
+                    }
                 });
             });
 
             const SLIDER_SPEED_SIZE: f64 = 0.01;
             const SLIDER_SPEED_POS: f64 = 0.1;
 
-            Window::new("Inspector")
-                .resizable(true)
-                .show(&ctx, |ui| {
-                    ui.scope(|ui| {
-                        ui.heading("Size");
-                        ui.horizontal(|ui| {
-                            ui.label("X:");
-                            let mut x = state.get_map_size().0;
-                            let changed = ui.add(DragValue::new(&mut x).speed(SLIDER_SPEED_SIZE))
-                                            .changed();
-                            state.set_map_size((x, state.get_map_size().1));
-                            if changed {
-                                state.regenerate_map();
-                            }
+            if state.ui_model.show_inspector {
+                Window::new("Inspector")
+                    .resizable(true)
+                    .show(&ctx, |ui| {
+                        ui.scope(|ui| {
+                            ui.heading("Size");
+                            ui.horizontal(|ui| {
+                                ui.label("X:");
+                                let mut x = state.get_map_size().0;
+                                let changed = ui.add(DragValue::new(&mut x).speed(SLIDER_SPEED_SIZE))
+                                    .changed();
+                                state.set_map_size((x, state.get_map_size().1));
+                                if changed {
+                                    state.regenerate_map();
+                                }
+                            });
+                            ui.horizontal(|ui| {
+                                ui.label("Y:");
+                                let mut y = state.get_map_size().1;
+                                let changed = ui.add(DragValue::new(&mut y).speed(SLIDER_SPEED_SIZE))
+                                    .changed();
+                                state.set_map_size((state.get_map_size().0, y));
+                                if changed {
+                                    state.regenerate_map();
+                                }
+                            });
                         });
-                        ui.horizontal(|ui| {
-                            ui.label("Y:");
-                            let mut y = state.get_map_size().1;
-                            let changed = ui.add(DragValue::new(&mut y).speed(SLIDER_SPEED_SIZE))
-                                            .changed();
-                            state.set_map_size((state.get_map_size().0, y));
-                            if changed {
-                                state.regenerate_map();
-                            }
-                        });
-                    });
-                    ui.separator();
-                    ui.scope(|ui| {
-                        ui.heading("Position");
-                        ui.horizontal(|ui| {
-                            ui.label("X:");
-                            let changed = ui.add(DragValue::new(&mut state.offset.0).speed(SLIDER_SPEED_POS))
-                                            .changed();
-                            if changed {
-                                state.regenerate_map();
-                            }
-                        });
-                        ui.horizontal(|ui| {
-                            ui.label("Y:");
-                            let changed = ui.add(DragValue::new(&mut state.offset.1).speed(SLIDER_SPEED_POS))
-                                            .changed();
-                            if changed {
-                                state.regenerate_map();
-                            }
-                        });
-                    });
-                }, );
+                    }, );
+            }
         }
     }
 }

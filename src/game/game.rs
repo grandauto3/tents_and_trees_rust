@@ -16,24 +16,27 @@ use notan::{
 use crate::{
     map::{
         map::create_map,
-        tile::tile::Tile,
+        tile::{
+            tile::{
+                Tile,
+                TileType,
+            }
+        },
     },
     config::game_config::GameConfig,
     game::game_ui::GameUI,
 };
-use crate::map::tile::tile::TileType;
+use crate::config::model::game_ui_config::GameUiConfig;
 
 #[derive(AppState)]
 pub struct State {
     map: Array2D<Tile>,
-    //pub toml: Asset<String>,
     cfg: GameConfig,
-
-    pub offset: (f32, f32),
+    pub ui_model: GameUiConfig
 }
 
 impl State {
-    pub fn create_game_state(assets: &mut Assets) -> Self {
+    pub fn create_game_state() -> Self {
         let cfg = GameConfig::load_or_create_new();
 
         let size = cfg.model.map_config.get_size();
@@ -41,7 +44,7 @@ impl State {
         Self {
             map: create_map(size),
             cfg,
-            offset: (20f32, 20f32),
+            ui_model: GameUiConfig::default()
         }
     }
 
@@ -52,7 +55,6 @@ impl State {
     pub fn get_map(&self) -> &Array2D<Tile> {
         &self.map
     }
-
     pub fn get_map_size(&self) -> (usize, usize) {
         self.cfg.model.map_config.get_size()
     }
@@ -106,7 +108,6 @@ impl Game {
                     TileType::TENT => Color::YELLOW,
                     TileType::TREE => Color::GREEN,
                     _ => Color::RED,
-
                 };
 
                 draw.rect(position, (SIZE_OF_CELL, SIZE_OF_CELL)).color(color);
