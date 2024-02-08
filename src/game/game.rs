@@ -59,7 +59,7 @@ impl State {
     pub fn set_map_size(&mut self, new: (usize, usize)) {
         self.cfg.model.map_config.set_size(new);
     }
-    pub fn redraw_map(&mut self) {
+    pub fn regenerate_map(&mut self) {
         self.map = create_map(self.get_map_size());
     }
 }

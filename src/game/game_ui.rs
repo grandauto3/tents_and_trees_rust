@@ -11,8 +11,8 @@ impl GameUI {
                     if ui.button("Save config").clicked() {
                         state.save_config();
                     }
-                    if ui.button("Redraw Map").clicked() {
-                        state.redraw_map();
+                    if ui.button("Regenerate Map").clicked() {
+                        state.regenerate_map();
                     }
                 });
             });
@@ -32,7 +32,7 @@ impl GameUI {
                                             .changed();
                             state.set_map_size((x, state.get_map_size().1));
                             if changed {
-                                state.redraw_map();
+                                state.regenerate_map();
                             }
                         });
                         ui.horizontal(|ui| {
@@ -42,7 +42,7 @@ impl GameUI {
                                             .changed();
                             state.set_map_size((state.get_map_size().0, y));
                             if changed {
-                                state.redraw_map();
+                                state.regenerate_map();
                             }
                         });
                     });
@@ -54,7 +54,7 @@ impl GameUI {
                             let changed = ui.add(DragValue::new(&mut state.offset.0).speed(SLIDER_SPEED_POS))
                                             .changed();
                             if changed {
-                                state.redraw_map();
+                                state.regenerate_map();
                             }
                         });
                         ui.horizontal(|ui| {
@@ -62,7 +62,7 @@ impl GameUI {
                             let changed = ui.add(DragValue::new(&mut state.offset.1).speed(SLIDER_SPEED_POS))
                                             .changed();
                             if changed {
-                                state.redraw_map();
+                                state.regenerate_map();
                             }
                         });
                     });
