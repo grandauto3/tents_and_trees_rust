@@ -76,66 +76,29 @@ impl Game {
         let window_size = app.backend.window().size();
         let window_center = (window_size.0 / 2, window_size.1 / 2);
 
-        println!("window_size: {:?}", window_size);
-        println!("window_center: {:?}", window_center);
-
         const SIZE_OF_CELL: f32 = 50f32;
         const PADDING: f32 = 10f32;
         const OFFSET: f32 = 10f32;
         const CELL_WITH_PADDING: f32 = SIZE_OF_CELL + PADDING;
 
-        let pos_in_x = (map_row_len / 2) as f32;
-        let pos_in_y = (map_col_len / 2) as f32;
-        //we add the cell size + padding to get the "bigger cell" (cell + padding)
-        //pos_in_x/y means the middle position of the map (in a 12*12 config, 6*6 for example)
-        //we also need the OFFSET
-        //finally we subtract half of the padding because we want the center of the padding and the full padding gives us the outermost right position
-        let off_set_x = state.offset.0 + ((CELL_WITH_PADDING) * (pos_in_x)) + OFFSET - (PADDING / 2f32);
-        let off_set_y = state.offset.1 + ((CELL_WITH_PADDING) * (pos_in_y)) + OFFSET - (PADDING / 2f32);
-        let off_set_x = (window_center.0 as f32 - (CELL_WITH_PADDING * (map_row_len / 2) as f32)) + ((CELL_WITH_PADDING) * (pos_in_x)) + OFFSET - (PADDING / 2f32);
-        let off_set_y = (window_center.1 as f32 - (CELL_WITH_PADDING * (map_col_len / 2) as f32)) + ((CELL_WITH_PADDING) * (pos_in_y)) + OFFSET - (PADDING / 2f32);
+        let center_of_map_in_x = (map_row_len / 2) as f32;
+        let center_of_map_in_y = (map_col_len / 2) as f32;
+        let center_of_map_relative = (
+            window_center.0 as f32 - (CELL_WITH_PADDING * center_of_map_in_x),
+            window_center.1 as f32 - (CELL_WITH_PADDING * center_of_map_in_y)
+        );
+
 
         let mut index = 0;
         for x in 0..map_row_len {
             for y in 0..map_col_len {
-                let position = (
-                    ((CELL_WITH_PADDING) * x as f32) + OFFSET,
-                    ((CELL_WITH_PADDING) * y as f32) + OFFSET
-                );
+                let off_set_x = center_of_map_relative.0 + OFFSET;
+                let off_set_y = center_of_map_relative.1 + OFFSET;
 
-                let off_set_x = window_center.0 as usize / (map_row_len / 2) + SIZE_OF_CELL as usize;
-                let off_set_y = window_center.1 as usize / (map_col_len / 2) + SIZE_OF_CELL as usize;
-
-                let off_set_x = (window_center.0 / 2) - (CELL_WITH_PADDING) as u32;
-                let off_set_y = (window_center.1 / 2) - (CELL_WITH_PADDING) as u32;
-
-                let off_set_x = ((state.offset.0 as i32) + (window_center.0 / 2) as i32);
-                let off_set_y = ((state.offset.1 as i32) + (window_center.1 / 2) as i32);
-
-                let off_set_x = (state.offset.0) + OFFSET;
-                let off_set_y = (state.offset.1) + OFFSET;
-
-                let off_set_x = (window_center.0 as f32 - (CELL_WITH_PADDING * (map_row_len / 2) as f32)) + OFFSET;
-                let off_set_y = (window_center.1 as f32 - (CELL_WITH_PADDING * (map_col_len / 2) as f32)) + OFFSET;
-
-
-                //println!("offset_x: {}; offset_y: {}", off_set_x, off_set_y);
-                //println!("window_x: {}; window_y: {}", window_center.0, window_center.1);
-
-                /*
-                    in a 1920x877 (VM on in-tech machine) the center is 960x438
-                    but offset needs to be 595x73
-                */
                 let position = (
                     ((CELL_WITH_PADDING) * x as f32) + off_set_x,
                     ((CELL_WITH_PADDING) * y as f32) + off_set_y,
                 );
-
-                // let position = (
-                //     ((CELL_WITH_PADDING) * x as f32) + state.offset.0,
-                //     ((CELL_WITH_PADDING) * y as f32) + state.offset.1,
-                // );
-
 
                 let color = match index % 5 {
                     0 => { Color::RED }
@@ -151,11 +114,6 @@ impl Game {
                 index += 1;
             }
         }
-
-        //center
-        draw.circle(5f32).position(window_center.0 as f32, window_center.1 as f32).color(Color::RED);
-
-        draw.circle(5f32).position(off_set_x as f32, off_set_y as f32);
 
         gfx.render(&draw);
 
