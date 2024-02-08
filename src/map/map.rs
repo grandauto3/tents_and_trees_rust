@@ -7,7 +7,7 @@ use crate::map::tile::{tile::*, point::*};
 pub fn create_map((size_x, size_y): (usize, usize)) -> Array2D<Tile> {
     let tree_set = get_random_tree_pos((size_x, size_y));
 
-    // start at -1 so we can safely increment it in the closure to 0
+    // start at -1, so we can safely increment it in the closure to 0
     // because the if-clause will be called on the first iteration even though the row is not completed
     let mut row_counter = -1;
     let mut column_counter = 0;
