@@ -4,13 +4,14 @@ use notan::{
     draw::{
         CreateDraw,
         DrawShapes,
-    },
-    prelude::{
+    }, prelude::{
         Color,
         Graphics,
+    }, app::{
+        App, Plugins,
     },
-    app::{App, Plugins},
     egui::EguiPluginSugar,
+    Event,
 };
 use crate::{
     map::{
@@ -26,9 +27,11 @@ use crate::{
         game_config::GameConfig,
         model::game_ui_config::GameUiConfig,
     },
-    game::game_ui::GameUI,
+    game::{
+        game_ui::GameUI,
+        game_state::GameState,
+    },
 };
-use crate::game::game_state::GameState;
 
 #[derive(AppState)]
 pub struct State {
@@ -81,6 +84,14 @@ impl State {
 pub struct Game;
 
 impl Game {
+    pub fn process_input(state: &mut State, event: Event) {
+        match event {
+            Event::MouseDown { button, x, y } => {}
+            Event::MouseUp { .. } => {}
+
+            _ => {}
+        }
+    }
     pub fn draw(app: &mut App, gfx: &mut Graphics, plugins: &mut Plugins, state: &mut State) {
         let mut draw = gfx.create_draw();
         draw.clear(Color::TEAL);
