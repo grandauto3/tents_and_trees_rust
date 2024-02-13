@@ -9,7 +9,6 @@ use notan::{
         Color,
         Graphics,
     },
-    prelude::Assets,
     app::{App, Plugins},
     egui::EguiPluginSugar,
 };
@@ -23,16 +22,18 @@ use crate::{
             }
         },
     },
-    config::game_config::GameConfig,
+    config::{
+        game_config::GameConfig,
+        model::game_ui_config::GameUiConfig,
+    },
     game::game_ui::GameUI,
 };
-use crate::config::model::game_ui_config::GameUiConfig;
 
 #[derive(AppState)]
 pub struct State {
     map: Array2D<Tile>,
     cfg: GameConfig,
-    pub ui_model: GameUiConfig
+    pub ui_model: GameUiConfig,
 }
 
 impl State {
@@ -44,7 +45,7 @@ impl State {
         Self {
             map: create_map(size),
             cfg,
-            ui_model: GameUiConfig::default()
+            ui_model: GameUiConfig::default(),
         }
     }
 
@@ -79,16 +80,17 @@ impl Game {
         let window_size = &app.backend.window().size();
         let window_center = (window_size.0 / 2, window_size.1 / 2);
 
-        const SIZE_OF_CELL: f32 = 50f32;
+        const SIZE_OF_CELL: (f32, f32) = (50f32, 50f32);
         const PADDING: f32 = 10f32;
         const OFFSET: f32 = 10f32;
-        const CELL_WITH_PADDING: f32 = SIZE_OF_CELL + PADDING;
+        const CELL_WITH_PADDING: (f32, f32) = (SIZE_OF_CELL.0 + PADDING,
+                                               SIZE_OF_CELL.1 + PADDING);
 
         let center_of_map_in_x = (map_row_len / 2) as f32;
         let center_of_map_in_y = (map_col_len / 2) as f32;
         let center_of_map_relative = (
-            window_center.0 as f32 - (CELL_WITH_PADDING * center_of_map_in_x),
-            window_center.1 as f32 - (CELL_WITH_PADDING * center_of_map_in_y)
+            window_center.0 as f32 - (CELL_WITH_PADDING.0 * center_of_map_in_x),
+            window_center.1 as f32 - (CELL_WITH_PADDING.1 * center_of_map_in_y)
         );
 
 
@@ -98,8 +100,8 @@ impl Game {
                 let off_set_y = center_of_map_relative.1 + OFFSET;
 
                 let position = (
-                    ((CELL_WITH_PADDING) * x as f32) + off_set_x,
-                    ((CELL_WITH_PADDING) * y as f32) + off_set_y,
+                    (CELL_WITH_PADDING.0 * x as f32) + off_set_x,
+                    (CELL_WITH_PADDING.1 * y as f32) + off_set_y,
                 );
 
                 let color = match element.get_tile_type() {
@@ -110,7 +112,7 @@ impl Game {
                     _ => Color::RED,
                 };
 
-                draw.rect(position, (SIZE_OF_CELL, SIZE_OF_CELL)).color(color);
+                draw.rect(position, SIZE_OF_CELL).color(color);
             }
         }
 
