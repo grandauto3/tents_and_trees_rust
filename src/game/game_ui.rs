@@ -15,7 +15,7 @@ impl GameUI {
                         state.regenerate_map();
                     }
                     if ui.button("Toggle inspector").clicked() {
-                        state.ui_model.show_inspector = !state.ui_model.show_inspector;
+                        state.get_game_ui_config().show_inspector = !state.get_game_ui_config().show_inspector;
                     }
                 });
             });
@@ -23,7 +23,7 @@ impl GameUI {
             const SLIDER_SPEED_SIZE: f64 = 0.01;
             const SLIDER_SPEED_POS: f64 = 0.1;
 
-            if state.ui_model.show_inspector {
+            if state.get_game_ui_config().show_inspector {
                 Window::new("Inspector")
                     .resizable(true)
                     .show(&ctx, |ui| {

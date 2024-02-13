@@ -33,7 +33,7 @@ use crate::{
 pub struct State {
     map: Array2D<Tile>,
     cfg: GameConfig,
-    pub ui_model: GameUiConfig,
+    ui_model: GameUiConfig,
 }
 
 impl State {
@@ -53,17 +53,25 @@ impl State {
         GameConfig::save_config(&self.cfg);
     }
 
+
     pub fn get_map(&self) -> &Array2D<Tile> {
         &self.map
     }
+
     pub fn get_map_size(&self) -> (usize, usize) {
         self.cfg.model.map_config.get_size()
     }
+
     pub fn set_map_size(&mut self, new: (usize, usize)) {
         self.cfg.model.map_config.set_size(new);
     }
+
     pub fn regenerate_map(&mut self) {
         self.map = create_map(self.get_map_size());
+    }
+
+    pub fn get_game_ui_config(&mut self) -> &mut GameUiConfig {
+        &mut self.ui_model
     }
 }
 
