@@ -59,7 +59,6 @@ impl State {
         GameConfig::save_config(&self.cfg);
     }
 
-
     pub fn get_map(&self) -> &Array2D<Tile> {
         &self.map
     }
