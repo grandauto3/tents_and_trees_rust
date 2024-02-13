@@ -92,14 +92,12 @@ impl Game {
             window_center.0 as f32 - (CELL_WITH_PADDING.0 * center_of_map_in_x),
             window_center.1 as f32 - (CELL_WITH_PADDING.1 * center_of_map_in_y)
         );
-        
+
         let off_set_x = relative_offset.0 + OFFSET;
         let off_set_y = relative_offset.1 + OFFSET;
-        draw.circle(5f32).position(off_set_x, off_set_y).color(Color::WHITE);
 
-
-        for (x, row) in state.map.rows_iter().enumerate() {
-            for (y, element) in row.enumerate() {
+        for (y, row) in state.map.rows_iter().enumerate() {
+            for (x, element) in row.enumerate() {
                 let position = (
                     (CELL_WITH_PADDING.0 * x as f32) + off_set_x,
                     (CELL_WITH_PADDING.1 * y as f32) + off_set_y,
@@ -116,8 +114,6 @@ impl Game {
                 draw.rect(position, SIZE_OF_CELL).color(color);
             }
         }
-
-        draw.circle(5f32).position(window_center.0 as f32, window_center.1 as f32).color(Color::RED);
 
         gfx.render(&draw);
 
