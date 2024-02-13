@@ -107,11 +107,11 @@ impl Game {
         let off_set_x = relative_offset.0 + OFFSET;
         let off_set_y = relative_offset.1 + OFFSET;
 
-        for (y, row) in state.map.rows_iter().enumerate() {
-            for (x, element) in row.enumerate() {
+        for (row_idx, row) in state.map.rows_iter().enumerate() {
+            for (col_idx, element) in row.enumerate() {
                 let position = (
-                    (CELL_WITH_PADDING.0 * x as f32) + off_set_x,
-                    (CELL_WITH_PADDING.1 * y as f32) + off_set_y,
+                    (CELL_WITH_PADDING.0 * col_idx as f32) + off_set_x,
+                    (CELL_WITH_PADDING.1 * row_idx as f32) + off_set_y,
                 );
 
                 let color = match element.get_tile_type() {
