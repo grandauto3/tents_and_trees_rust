@@ -82,23 +82,23 @@ impl Game {
 
         const SIZE_OF_CELL: (f32, f32) = (50f32, 50f32);
         const PADDING: f32 = 10f32;
-        const OFFSET: f32 = 10f32;
+        const OFFSET: f32 = PADDING / 2f32;
         const CELL_WITH_PADDING: (f32, f32) = (SIZE_OF_CELL.0 + PADDING,
                                                SIZE_OF_CELL.1 + PADDING);
 
         let center_of_map_in_x = (map_row_len / 2) as f32;
         let center_of_map_in_y = (map_col_len / 2) as f32;
-        let center_of_map_relative = (
+        let relative_offset = (
             window_center.0 as f32 - (CELL_WITH_PADDING.0 * center_of_map_in_x),
             window_center.1 as f32 - (CELL_WITH_PADDING.1 * center_of_map_in_y)
         );
+        
+        let off_set_x = relative_offset.0 + OFFSET;
+        let off_set_y = relative_offset.1 + OFFSET;
 
 
         for (x, row) in state.map.rows_iter().enumerate() {
             for (y, element) in row.enumerate() {
-                let off_set_x = center_of_map_relative.0 + OFFSET;
-                let off_set_y = center_of_map_relative.1 + OFFSET;
-
                 let position = (
                     (CELL_WITH_PADDING.0 * x as f32) + off_set_x,
                     (CELL_WITH_PADDING.1 * y as f32) + off_set_y,
