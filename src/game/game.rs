@@ -95,6 +95,7 @@ impl Game {
         
         let off_set_x = relative_offset.0 + OFFSET;
         let off_set_y = relative_offset.1 + OFFSET;
+        draw.circle(5f32).position(off_set_x, off_set_y).color(Color::WHITE);
 
 
         for (x, row) in state.map.rows_iter().enumerate() {
@@ -115,6 +116,8 @@ impl Game {
                 draw.rect(position, SIZE_OF_CELL).color(color);
             }
         }
+
+        draw.circle(5f32).position(window_center.0 as f32, window_center.1 as f32).color(Color::RED);
 
         gfx.render(&draw);
 
