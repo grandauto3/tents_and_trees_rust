@@ -28,12 +28,14 @@ use crate::{
     },
     game::game_ui::GameUI,
 };
+use crate::game::game_state::GameState;
 
 #[derive(AppState)]
 pub struct State {
     map: Array2D<Tile>,
     cfg: GameConfig,
     ui_model: GameUiConfig,
+    game_state: GameState,
 }
 
 impl State {
@@ -46,6 +48,7 @@ impl State {
             map: create_map(size),
             cfg,
             ui_model: GameUiConfig::default(),
+            game_state: GameState::default(),
         }
     }
 
