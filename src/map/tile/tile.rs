@@ -8,6 +8,8 @@ use crate::{
     }
 };
 
+pub const SIZE_OF_TILE: (f32, f32) = (50f32, 50f32);
+
 #[derive(Clone, Debug, PartialEq)]
 pub enum TileType {
     UNKNOWN,
@@ -21,7 +23,7 @@ pub struct Tile {
     tile_type: TileType,
     coord: GridPosition,
     pub position: Cell<Point>,
-    pub size: Cell<(f32, f32)>,
+    size: (f32, f32),
 }
 
 impl Default for Tile {
@@ -30,7 +32,7 @@ impl Default for Tile {
             tile_type: TileType::UNKNOWN,
             coord: GridPosition::default(),
             position: Cell::new(Point::default()),
-            size: Cell::new((0f32, 0f32)),
+            size: SIZE_OF_TILE,
         }
     }
 }
@@ -41,12 +43,16 @@ impl Tile {
             tile_type,
             coord,
             position: Cell::new(position),
-            size: Cell::new((0f32, 0f32)),
+            ..Self::default()
         }
     }
 
     pub fn get_tile_type(&self) -> &TileType {
         &self.tile_type
+    }
+
+    pub fn get_tile_size(&self) -> (f32,f32) {
+        self.size
     }
 }
 

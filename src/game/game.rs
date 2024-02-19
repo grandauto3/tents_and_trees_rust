@@ -19,6 +19,7 @@ use crate::{
             tile::{
                 Tile,
                 TileType,
+                SIZE_OF_TILE,
             }
         },
     },
@@ -99,7 +100,7 @@ impl Game {
                 TileType::TREE => Color::GREEN,
                 _ => Color::RED,
             };
-            draw.rect(element.position.get().into(), element.size.get()).color(color);
+            draw.rect(element.position.get().into(), element.get_tile_size()).color(color);
         });
 
         gfx.render(&draw);
@@ -119,23 +120,22 @@ impl Game {
     }
 
     fn calculate_tile_pos(app: &mut App, state: &mut State) {
+        const PADDING: f32 = 10f32;
+        const OFFSET: f32 = PADDING / 2f32;
+        const TILE_WITH_PADDING: (f32, f32) = (SIZE_OF_TILE.0 + PADDING,
+                                               SIZE_OF_TILE.1 + PADDING);
+
         let map_row_len = &state.map.row_len();
         let map_col_len = &state.map.column_len();
 
         let window_size = &app.backend.window().size();
         let window_center = (window_size.0 / 2, window_size.1 / 2);
 
-        const SIZE_OF_CELL: (f32, f32) = (50f32, 50f32);
-        const PADDING: f32 = 10f32;
-        const OFFSET: f32 = PADDING / 2f32;
-        const CELL_WITH_PADDING: (f32, f32) = (SIZE_OF_CELL.0 + PADDING,
-                                               SIZE_OF_CELL.1 + PADDING);
-
         let center_of_map_in_x = (map_row_len / 2) as f32;
         let center_of_map_in_y = (map_col_len / 2) as f32;
         let relative_offset = (
-            window_center.0 as f32 - (CELL_WITH_PADDING.0 * center_of_map_in_x),
-            window_center.1 as f32 - (CELL_WITH_PADDING.1 * center_of_map_in_y)
+            window_center.0 as f32 - (TILE_WITH_PADDING.0 * center_of_map_in_x),
+            window_center.1 as f32 - (TILE_WITH_PADDING.1 * center_of_map_in_y)
         );
 
         let off_set_x = relative_offset.0 + OFFSET;
@@ -144,12 +144,11 @@ impl Game {
         for (row_idx, row) in state.map.rows_iter().enumerate() {
             for (col_idx, element) in row.enumerate() {
                 let position = (
-                    (CELL_WITH_PADDING.0 * col_idx as f32) + off_set_x,
-                    (CELL_WITH_PADDING.1 * row_idx as f32) + off_set_y,
+                    (TILE_WITH_PADDING.0 * col_idx as f32) + off_set_x,
+                    (TILE_WITH_PADDING.1 * row_idx as f32) + off_set_y,
                 );
 
                 element.position.set(position.into());
-                element.size.set(SIZE_OF_CELL);
             }
         }
     }
