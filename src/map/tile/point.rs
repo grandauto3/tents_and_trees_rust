@@ -12,3 +12,9 @@ impl From<(f32, f32)> for Point {
         Self(value.0, value.1)
     }
 }
+
+impl Into<(f32, f32)> for Point {
+    fn into(self) -> (f32, f32) {
+        (self.0, self.1)
+    }
+}

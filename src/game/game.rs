@@ -84,12 +84,41 @@ pub struct Game;
 impl Game {
     pub fn update(app: &mut App, state: &mut State) {
         Self::process_input(app);
+        Self::calculate_tile_pos(app, state);
     }
 
     pub fn draw(app: &mut App, gfx: &mut Graphics, plugins: &mut Plugins, state: &mut State) {
         let mut draw = gfx.create_draw();
         draw.clear(Color::TEAL);
 
+        state.map.elements_row_major_iter().for_each(|element| {
+            let color = match element.get_tile_type() {
+                TileType::UNKNOWN => Color::GRAY,
+                TileType::EMPTY => Color::OLIVE,
+                TileType::TENT => Color::YELLOW,
+                TileType::TREE => Color::GREEN,
+                _ => Color::RED,
+            };
+            draw.rect(element.position.get().into(), element.size.get()).color(color);
+        });
+
+        gfx.render(&draw);
+
+
+        let ui = GameUI::draw_ui(state);
+        let ui = plugins.egui(ui);
+        gfx.render(&ui);
+    }
+}
+
+impl Game {
+    fn process_input(app: &mut App) {
+        if app.mouse.left_was_pressed() {
+            println!("Left was clicked");
+        }
+    }
+
+    fn calculate_tile_pos(app: &mut App, state: &mut State) {
         let map_row_len = &state.map.row_len();
         let map_col_len = &state.map.column_len();
 
@@ -120,32 +149,8 @@ impl Game {
                 );
 
                 element.position.set(position.into());
-
-                let color = match element.get_tile_type() {
-                    TileType::UNKNOWN => Color::GRAY,
-                    TileType::EMPTY => Color::OLIVE,
-                    TileType::TENT => Color::YELLOW,
-                    TileType::TREE => Color::GREEN,
-                    _ => Color::RED,
-                };
-
-                draw.rect(position, SIZE_OF_CELL).color(color);
+                element.size.set(SIZE_OF_CELL);
             }
-        }
-
-        gfx.render(&draw);
-
-
-        let ui = GameUI::draw_ui(state);
-        let ui = plugins.egui(ui);
-        gfx.render(&ui);
-    }
-}
-
-impl Game {
-    fn process_input(app: &mut App) {
-        if app.mouse.left_was_pressed() {
-            println!("Left was clicked");
         }
     }
 }
