@@ -28,8 +28,8 @@ fn main() -> Result<(), String> {
         .add_config(EguiConfig)
 
         .initialize(|assets: &mut Assets, plugins: &mut Plugins, state: &mut State| {})
-        .event(Game::process_input)
-        .update(|assets: &mut Assets, state: &mut State| {})
+
+        .update(Game::update)
 
         .draw(Game::draw)
         .build()

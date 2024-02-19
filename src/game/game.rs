@@ -11,7 +11,6 @@ use notan::{
         App, Plugins,
     },
     egui::EguiPluginSugar,
-    Event,
 };
 use crate::{
     map::{
@@ -83,14 +82,10 @@ impl State {
 pub struct Game;
 
 impl Game {
-    pub fn process_input(state: &mut State, event: Event) {
-        match event {
-            Event::MouseDown { button, x, y } => {}
-            Event::MouseUp { .. } => {}
-
-            _ => {}
-        }
+    pub fn update(app: &mut App, state: &mut State) {
+        Self::process_input(app);
     }
+
     pub fn draw(app: &mut App, gfx: &mut Graphics, plugins: &mut Plugins, state: &mut State) {
         let mut draw = gfx.create_draw();
         draw.clear(Color::TEAL);
@@ -144,5 +139,13 @@ impl Game {
         let ui = GameUI::draw_ui(state);
         let ui = plugins.egui(ui);
         gfx.render(&ui);
+    }
+}
+
+impl Game {
+    fn process_input(app: &mut App) {
+        if app.mouse.left_was_pressed() {
+            println!("Left was clicked");
+        }
     }
 }

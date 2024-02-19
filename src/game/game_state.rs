@@ -1,5 +1,4 @@
 pub struct GameState {
-    pub clicked: bool,
 }
 
 
@@ -12,7 +11,6 @@ impl GameState {
 impl Default for GameState {
     fn default() -> Self {
         Self {
-            clicked: false,
         }
     }
 }
