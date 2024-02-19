@@ -84,8 +84,8 @@ pub struct Game;
 
 impl Game {
     pub fn update(app: &mut App, state: &mut State) {
-        Self::process_input(app);
         Self::calculate_tile_pos(app, state);
+        Self::process_input(app, state);
     }
 
     pub fn draw(app: &mut App, gfx: &mut Graphics, plugins: &mut Plugins, state: &mut State) {
@@ -113,9 +113,14 @@ impl Game {
 }
 
 impl Game {
-    fn process_input(app: &mut App) {
+    fn process_input(app: &mut App, state: &mut State) {
+        let map = state.map.as_row_major();
         if app.mouse.left_was_pressed() {
-            println!("Left was clicked");
+            if let Some(tile) = map.iter().find(|e| {
+                e.is_in_boundary_box(app.mouse.position().into())
+            }) {
+                println!("Found! {:?}", tile.get_tile_type());
+            };
         }
     }
 

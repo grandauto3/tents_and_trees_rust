@@ -54,5 +54,19 @@ impl Tile {
     pub fn get_tile_size(&self) -> (f32,f32) {
         self.size
     }
+
+    pub fn is_in_boundary_box(&self, position: Point) -> bool {
+        let top_left_pos = self.position.get();
+        let bottom_right_pos = top_left_pos + self.size.get();
+
+        let is_in_x = position.0 >= top_left_pos.0 && position.0 <= bottom_right_pos.0;
+        let is_in_y = position.1 >= top_left_pos.1 && position.1 <= bottom_right_pos.1;
+
+        if is_in_x && is_in_y {
+            true
+        } else {
+            false
+        }
+    }
 }
 
