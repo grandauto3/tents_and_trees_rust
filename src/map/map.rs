@@ -7,12 +7,12 @@ use crate::{
         tile::{
             tile::*,
             grid_position::*,
-            point::Point
+            point::Point,
         }
     }
 };
 
-pub fn create_map((size_x, size_y): (usize, usize)) -> Array2D<Tile> {
+pub fn create_map((size_x, size_y): (usize, usize), tile_size: (f32, f32)) -> Array2D<Tile> {
     let tree_set = get_random_tree_pos((size_x, size_y));
 
     // start at -1, so we can safely increment it in the closure to 0
@@ -38,7 +38,7 @@ pub fn create_map((size_x, size_y): (usize, usize)) -> Array2D<Tile> {
             TileType::UNKNOWN
         };
 
-        Tile::new(tile_type, grid_pos, Point::default())
+        Tile::new(tile_type, grid_pos, Point::default(),tile_size)
     };
     Array2D::filled_by_row_major(incrementor, size_x, size_y)
 }

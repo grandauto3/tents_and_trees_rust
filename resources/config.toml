@@ -1,3 +1,6 @@
+[map_config]
+size_of_tile = 50.0
+
 [map_config.size]
 x = 12
 y = 12

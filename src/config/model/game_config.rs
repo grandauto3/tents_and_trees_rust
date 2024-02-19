@@ -4,6 +4,7 @@ use toml::{
 };
 
 const SIZE: u32 = 12;
+const SIZE_OF_TILE: f32 = 50f32;
 
 #[derive(Serialize, Deserialize)]
 pub struct Config {
@@ -12,11 +13,12 @@ pub struct Config {
 
 #[derive(Serialize, Deserialize)]
 pub struct MapConfig {
-    pub size: Table,
+    size: Table,
+    size_of_tile: f32,
 }
 
 impl MapConfig {
-    pub fn get_size(&self) -> (usize, usize) {
+    pub fn get_map_size(&self) -> (usize, usize) {
         (
             self.size.get("x").unwrap().as_integer().unwrap() as usize,
             self.size.get("y").unwrap().as_integer().unwrap() as usize,
@@ -25,6 +27,10 @@ impl MapConfig {
     pub fn set_size(&mut self, new: (usize, usize)) {
         *self.size.get_mut("x").unwrap() = toml::Value::Integer(new.0 as i64);
         *self.size.get_mut("y").unwrap() = toml::Value::Integer(new.1 as i64);
+    }
+
+    pub fn get_tile_size(&self) -> (f32, f32) {
+        (self.size_of_tile, self.size_of_tile)
     }
 }
 
@@ -44,6 +50,7 @@ impl Default for MapConfig {
 
         MapConfig {
             size: default_table,
+            size_of_tile: SIZE_OF_TILE,
         }
     }
 }
