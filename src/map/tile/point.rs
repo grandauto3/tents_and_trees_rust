@@ -1,17 +1,14 @@
-#[derive(Copy, Clone, PartialOrd, PartialEq, Debug, Eq, Hash)]
-pub struct Point {
-    row: usize,
-    column: usize,
-}
+#[derive(Copy, Clone, PartialOrd, PartialEq, Debug)]
+pub struct Point(f32, f32);
 
 impl Default for Point {
     fn default() -> Self {
-        Self { row: 0, column: 0 }
+        Self(0f32, 0f32)
     }
 }
 
-impl Point {
-    pub fn new((row, column): (usize, usize)) -> Self {
-        Self { row, column }
+impl From<(f32, f32)> for Point {
+    fn from(value: (f32, f32)) -> Self {
+        Self(value.0, value.1)
     }
 }

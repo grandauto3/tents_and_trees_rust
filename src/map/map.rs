@@ -2,7 +2,15 @@ use std::collections::HashSet;
 use array2d::Array2D;
 use rand::Rng;
 
-use crate::map::tile::{tile::*, point::*};
+use crate::{
+    map::{
+        tile::{
+            tile::*,
+            grid_position::*,
+            point::Point
+        }
+    }
+};
 
 pub fn create_map((size_x, size_y): (usize, usize)) -> Array2D<Tile> {
     let tree_set = get_random_tree_pos((size_x, size_y));
@@ -22,15 +30,15 @@ pub fn create_map((size_x, size_y): (usize, usize)) -> Array2D<Tile> {
         let tmp_row = row_counter as usize;
         let row = tmp_row % size_x;
 
-        let point = Point::new((row, column));
+        let grid_pos = GridPosition::new((row, column));
 
-        let tile_type = if tree_set.contains(&point) {
+        let tile_type = if tree_set.contains(&grid_pos) {
             TileType::TREE
         } else {
             TileType::UNKNOWN
         };
 
-        Tile::new(tile_type, point)
+        Tile::new(tile_type, grid_pos, Point::default())
     };
     Array2D::filled_by_row_major(incrementor, size_x, size_y)
 }
@@ -76,7 +84,7 @@ pub fn draw_map(map: &Array2D<Tile>) {
     println!("{}", line);
 }
 
-fn get_random_tree_pos((size_x, size_y): (usize, usize)) -> HashSet<Point> {
+fn get_random_tree_pos((size_x, size_y): (usize, usize)) -> HashSet<GridPosition> {
     let mut tree_set = HashSet::new();
 
     let mut rng = rand::thread_rng();
@@ -85,7 +93,7 @@ fn get_random_tree_pos((size_x, size_y): (usize, usize)) -> HashSet<Point> {
         'inner: loop {
             let rnd_row = rng.gen_range(0..size_x);
             let rnd_column = rng.gen_range(0..size_y);
-            let did_insert = tree_set.insert(Point::new((rnd_row, rnd_column)));
+            let did_insert = tree_set.insert(GridPosition::new((rnd_row, rnd_column)));
 
             if did_insert {
                 break 'inner;

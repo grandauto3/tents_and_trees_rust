@@ -124,6 +124,8 @@ impl Game {
                     (CELL_WITH_PADDING.1 * row_idx as f32) + off_set_y,
                 );
 
+                element.position.set(position.into());
+
                 let color = match element.get_tile_type() {
                     TileType::UNKNOWN => Color::GRAY,
                     TileType::EMPTY => Color::OLIVE,
