@@ -118,14 +118,17 @@ impl Game {
 
 impl Game {
     fn process_input(app: &mut App, state: &mut State) {
-        let map = state.map.as_row_major();
         if app.mouse.left_was_pressed() {
-            if let Some(tile) = map.iter().find(|e| {
+            if let Some(index) = state.map.as_row_major().iter().position(|e| {
                 e.is_in_boundary_box(app.mouse.position().into())
             }) {
-                println!("Found! {:?}", tile.get_tile_type());
+                if let Some(tile) = state.map.get_mut_row_major(index) {
+                    println!("Found! {:?}", tile.get_tile_type());
+                    tile.switch_to_next_tile_type();
+                    println!("Now! {:?}", tile.get_tile_type());
+                };
             };
-        }
+        };
     }
 
     fn calculate_tile_pos(app: &mut App, state: &mut State) {

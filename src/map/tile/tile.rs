@@ -53,6 +53,15 @@ impl Tile {
         self.size
     }
 
+    pub fn switch_to_next_tile_type(&mut self) {
+        self.tile_type = match self.tile_type {
+            TileType::UNKNOWN => TileType::EMPTY,
+            TileType::EMPTY => TileType::TENT,
+            TileType::TENT => TileType::UNKNOWN,
+            TileType::TREE => TileType::TREE,
+        };
+    }
+
     pub fn is_in_boundary_box(&self, position: Point) -> bool {
         let top_left_pos = self.position.get();
         let bottom_right_pos = top_left_pos + self.size;
