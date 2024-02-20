@@ -123,9 +123,7 @@ impl Game {
                 e.is_in_boundary_box(app.mouse.position().into())
             }) {
                 if let Some(tile) = state.map.get_mut_row_major(index) {
-                    println!("Found! {:?}", tile.get_tile_type());
                     tile.switch_to_next_tile_type();
-                    println!("Now! {:?}", tile.get_tile_type());
                 };
             };
         };
