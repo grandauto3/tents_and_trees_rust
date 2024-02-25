@@ -142,12 +142,12 @@ impl Game {
         let tile_with_padding: (f32, f32) = (state.get_tile_size().0 + PADDING,
                                              state.get_tile_size().1 + PADDING);
 
-        let center_of_map_in_x = (map_row_len / 2) as f32;
-        let center_of_map_in_y = (map_col_len / 2) as f32;
+        let center_of_map_in_x = map_row_len / 2;
+        let center_of_map_in_y = map_col_len / 2;
 
         let relative_offset = (
-            window_center.0 as f32 - (tile_with_padding.0 * center_of_map_in_x),
-            window_center.1 as f32 - (tile_with_padding.1 * center_of_map_in_y)
+            window_center.0 as f32 - (tile_with_padding.0 * (center_of_map_in_x as f32)),
+            window_center.1 as f32 - (tile_with_padding.1 * (center_of_map_in_y as f32))
         );
 
         let off_set_x = relative_offset.0 + OFFSET;
