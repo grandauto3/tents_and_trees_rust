@@ -4,11 +4,16 @@ use notan::{
     draw::{
         CreateDraw,
         DrawShapes,
-    }, prelude::{
+    },
+    prelude::{
         Color,
         Graphics,
-    }, app::{
-        App, Plugins,
+        Assets,
+        AssetList
+    },
+    app::{
+        App,
+        Plugins,
     },
     egui::EguiPluginSugar,
 };
@@ -30,6 +35,7 @@ use crate::{
         game_ui::GameUI,
         game_state::GameState,
     },
+    resources::asset_handler::get_asset_paths_vec,
 };
 
 #[derive(AppState)]
@@ -38,20 +44,24 @@ pub struct State {
     cfg: GameConfig,
     ui_model: GameUiConfig,
     game_state: GameState,
+    asset_list: AssetList,
 }
 
 impl State {
-    pub fn create_game_state() -> Self {
+    pub fn create_game_state(asset: &mut Assets) -> Self {
         let cfg = GameConfig::load_or_create_new();
 
         let map_size = cfg.model.map_config.get_map_size();
         let tile_size = cfg.model.map_config.get_tile_size();
+
+        let asset_list = asset.load_list(&get_asset_paths_vec()).expect("Could not load assets");
 
         Self {
             map: create_map(map_size, tile_size),
             cfg,
             ui_model: GameUiConfig::default(),
             game_state: GameState::default(),
+            asset_list,
         }
     }
 

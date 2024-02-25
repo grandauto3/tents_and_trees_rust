@@ -1,4 +1,5 @@
 use std::cell::Cell;
+use enum_map::Enum;
 use crate::{
     map::{
         tile::{
@@ -8,7 +9,7 @@ use crate::{
     }
 };
 
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash, Enum)]
 pub enum TileType {
     UNKNOWN,
     EMPTY,
