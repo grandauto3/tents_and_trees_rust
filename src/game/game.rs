@@ -1,21 +1,24 @@
+use anyhow::*;
 use array2d::Array2D;
 use notan::{
-    AppState,
     draw::{
+        DrawImages,
         CreateDraw,
-        DrawShapes,
+        DrawShapes
     },
+    AppState,
     prelude::{
         Color,
         Graphics,
         Assets,
-        AssetList
+        AssetList,
     },
     app::{
         App,
         Plugins,
     },
     egui::EguiPluginSugar,
+    graphics::Texture
 };
 use crate::{
     map::{
@@ -35,7 +38,12 @@ use crate::{
         game_ui::GameUI,
         game_state::GameState,
     },
-    resources::asset_handler::get_asset_paths_vec,
+    resources::{
+        asset_handler::{
+            get_asset_paths_vec,
+            ASSET_PATH_MAP
+        }
+    }
 };
 
 #[derive(AppState)]
@@ -102,21 +110,40 @@ impl Game {
         Self::process_input(app, state);
     }
 
-    pub fn draw(app: &mut App, gfx: &mut Graphics, plugins: &mut Plugins, state: &mut State) {
+    pub fn draw(gfx: &mut Graphics, plugins: &mut Plugins, state: &mut State) {
         let mut draw = gfx.create_draw();
         draw.clear(Color::TEAL);
 
         state.map.elements_row_major_iter().for_each(|element| {
-            let color = match element.get_tile_type() {
-                TileType::UNKNOWN => Color::GRAY,
-                TileType::EMPTY => Color::OLIVE,
-                TileType::TENT => Color::YELLOW,
-                TileType::TREE => Color::GREEN,
-                _ => Color::RED,
+            let mut try_get_texture = || {
+                let tile_type = element.get_tile_type().clone();
+                let asset_path = ASSET_PATH_MAP[tile_type].ok_or(Error::msg("Path is None"))?;
+                if !state.asset_list.is_loaded() {
+                    bail!("asset list not loaded");
+                }
+                state.asset_list.get_clone::<Texture>(asset_path).map_err(|e| Error::msg(e))
             };
-            draw.rect(element.position.get().into(), element.get_tile_size()).color(color);
-        });
 
+            match try_get_texture() {
+                Result::Ok(asset) => {
+                    if let Some(tex) = asset.lock() {
+                        draw.image(&tex)
+                            .position(element.position.get().0, element.position.get().1)
+                            .size(element.get_tile_size().0, element.get_tile_size().1);
+                    };
+                }
+                Err(_) => {
+                    let color = match element.get_tile_type() {
+                        TileType::UNKNOWN => Color::GRAY,
+                        TileType::EMPTY => Color::OLIVE,
+                        TileType::TENT => Color::YELLOW,
+                        TileType::TREE => Color::GREEN,
+                        _ => Color::RED,
+                    };
+                    draw.rect(element.position.get().into(), element.get_tile_size()).color(color);
+                }
+            }
+        });
         gfx.render(&draw);
 
 
