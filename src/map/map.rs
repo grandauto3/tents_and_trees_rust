@@ -33,12 +33,12 @@ pub fn create_map((size_x, size_y): (usize, usize), tile_size: (f32, f32)) -> Ar
         let grid_pos = GridPosition::new((row, column));
 
         let tile_type = if tree_set.contains(&grid_pos) {
-            TileType::TREE
+            TileType::Tree
         } else {
-            TileType::UNKNOWN
+            TileType::Unknown
         };
 
-        Tile::new(tile_type, grid_pos, Point::default(),tile_size)
+        Tile::new(tile_type, grid_pos, Point::default(), tile_size)
     };
     Array2D::filled_by_row_major(incrementor, size_x, size_y)
 }
@@ -73,10 +73,10 @@ pub fn draw_map(map: &Array2D<Tile>) {
         print!("|");
         for e in row_iter {
             match e.get_tile_type() {
-                TileType::UNKNOWN => print!("0"),
-                TileType::EMPTY => print!("x"),
-                TileType::TENT => print!("T"),
-                TileType::TREE => print!("t"),
+                TileType::Unknown => print!("0"),
+                TileType::Empty => print!("x"),
+                TileType::Tent => print!("T"),
+                TileType::Tree => print!("t"),
             }
         }
         println!("|");

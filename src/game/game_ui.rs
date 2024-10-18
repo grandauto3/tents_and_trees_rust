@@ -26,7 +26,7 @@ impl GameUI {
             if state.get_game_ui_config().show_inspector {
                 Window::new("Inspector")
                     .resizable(true)
-                    .show(&ctx, |ui| {
+                    .show(ctx, |ui| {
                         ui.scope(|ui| {
                             ui.heading("Size");
                             ui.horizontal(|ui| {

@@ -4,7 +4,7 @@ use notan::{
     draw::{
         DrawImages,
         CreateDraw,
-        DrawShapes
+        DrawShapes,
     },
     AppState,
     prelude::{
@@ -18,7 +18,7 @@ use notan::{
         Plugins,
     },
     egui::EguiPluginSugar,
-    graphics::Texture
+    graphics::Texture,
 };
 use crate::{
     map::{
@@ -41,9 +41,9 @@ use crate::{
     resources::{
         asset_handler::{
             get_asset_paths_vec,
-            ASSET_PATH_MAP
+            ASSET_PATH_MAP,
         }
-    }
+    },
 };
 
 #[derive(AppState)]
@@ -121,7 +121,7 @@ impl Game {
                 if !state.asset_list.is_loaded() {
                     bail!("asset list not loaded");
                 }
-                state.asset_list.get_clone::<Texture>(asset_path).map_err(|e| Error::msg(e))
+                state.asset_list.get_clone::<Texture>(asset_path).map_err(Error::msg)
             };
 
             match try_get_texture() {
@@ -134,11 +134,10 @@ impl Game {
                 }
                 Err(_) => {
                     let color = match element.get_tile_type() {
-                        TileType::UNKNOWN => Color::GRAY,
-                        TileType::EMPTY => Color::OLIVE,
-                        TileType::TENT => Color::YELLOW,
-                        TileType::TREE => Color::GREEN,
-                        _ => Color::RED,
+                        TileType::Unknown => Color::GRAY,
+                        TileType::Empty => Color::OLIVE,
+                        TileType::Tent => Color::YELLOW,
+                        TileType::Tree => Color::GREEN,
                     };
                     draw.rect(element.position.get().into(), element.get_tile_size()).color(color);
                 }

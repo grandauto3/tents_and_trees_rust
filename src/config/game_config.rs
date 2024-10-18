@@ -25,14 +25,14 @@ impl GameConfig {
         let toml = match toml::to_string(&cfg.model) {
             Ok(s) => { s }
             Err(e) => {
-                println!("{}", e.to_string());
+                println!("{}", e);
                 "".into()
             }
         };
 
         println!("Save toml: \n{toml}");
 
-        write_file(CONFIG_FILE_NAME, &toml).unwrap_or_else(|e| println!("{}", e.to_string()));
+        write_file(CONFIG_FILE_NAME, &toml).unwrap_or_else(|e| println!("{}", e));
     }
 
 

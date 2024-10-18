@@ -6,7 +6,7 @@ use toml::{
 const SIZE: u32 = 12;
 const SIZE_OF_TILE: f32 = 50f32;
 
-#[derive(Serialize, Deserialize)]
+#[derive(Default, Serialize, Deserialize)]
 pub struct Config {
     pub map_config: MapConfig,
 }
@@ -31,14 +31,6 @@ impl MapConfig {
 
     pub fn get_tile_size(&self) -> (f32, f32) {
         (self.size_of_tile, self.size_of_tile)
-    }
-}
-
-impl Default for Config {
-    fn default() -> Self {
-        Config {
-            map_config: MapConfig::default()
-        }
     }
 }
 

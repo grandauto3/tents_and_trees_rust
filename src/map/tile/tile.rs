@@ -11,10 +11,10 @@ use crate::{
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash, Enum)]
 pub enum TileType {
-    UNKNOWN,
-    EMPTY,
-    TENT,
-    TREE,
+    Unknown,
+    Empty,
+    Tent,
+    Tree,
 }
 
 #[derive(Clone, PartialEq, Debug)]
@@ -28,7 +28,7 @@ pub struct Tile {
 impl Default for Tile {
     fn default() -> Self {
         Tile {
-            tile_type: TileType::UNKNOWN,
+            tile_type: TileType::Unknown,
             coord: GridPosition::default(),
             position: Cell::new(Point::default()),
             size: (0f32, 0f32),
@@ -56,10 +56,10 @@ impl Tile {
 
     pub fn switch_to_next_tile_type(&mut self) {
         self.tile_type = match self.tile_type {
-            TileType::UNKNOWN => TileType::EMPTY,
-            TileType::EMPTY => TileType::TENT,
-            TileType::TENT => TileType::UNKNOWN,
-            TileType::TREE => TileType::TREE,
+            TileType::Unknown => TileType::Empty,
+            TileType::Empty => TileType::Tent,
+            TileType::Tent => TileType::Unknown,
+            TileType::Tree => TileType::Tree,
         };
     }
 
