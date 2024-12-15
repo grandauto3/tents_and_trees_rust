@@ -38,12 +38,7 @@ use crate::{
         game_ui::GameUI,
         game_state::GameState,
     },
-    resources::{
-        asset_handler::{
-            get_asset_paths_vec,
-            ASSET_PATH_MAP,
-        }
-    },
+    resources::asset_handler::AssetHandler
 };
 
 #[derive(AppState)]
@@ -62,7 +57,7 @@ impl State {
         let map_size = cfg.model.map_config.get_map_size();
         let tile_size = cfg.model.map_config.get_tile_size();
 
-        let asset_list = asset.load_list(&get_asset_paths_vec()).expect("Could not load assets");
+        let asset_list = asset.load_list(&AssetHandler::get_path_vec()).expect("Could not load assets");
 
         Self {
             map: create_map(map_size, tile_size),
@@ -117,7 +112,9 @@ impl Game {
         state.map.elements_row_major_iter().for_each(|element| {
             let mut try_get_texture = || {
                 let tile_type = element.get_tile_type().clone();
-                let asset_path = ASSET_PATH_MAP[tile_type].ok_or(Error::msg("Path is None"))?;
+                // let asset_path = ASSET_PATH_MAP[tile_type].ok_or(Error::msg("Path is None"))?;
+                let asset_path = AssetHandler::get_path(tile_type)
+                    .ok_or(Error::msg("Path is None"))?;
                 if !state.asset_list.is_loaded() {
                     bail!("asset list not loaded");
                 }
